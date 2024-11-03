@@ -31,7 +31,6 @@ def download_video():
             info_dict = ydl.extract_info(video_url, download=True)
             file_path = ydl.prepare_filename(info_dict)
         
-        # 다운로드 완료 페이지로 리디렉션하면서 파일명 전달
         filename = os.path.basename(file_path)
         return redirect(url_for('download_complete', filename=filename))
     except Exception as e:
@@ -39,12 +38,10 @@ def download_video():
 
 @app.route('/download_complete/<filename>')
 def download_complete(filename):
-    # 파일명과 다운로드 링크를 표시하는 페이지 렌더링
     return render_template('download_complete.html', filename=filename)
 
 @app.route('/download_file/<filename>')
 def download_file(filename):
-    # 사용자에게 파일 다운로드 링크 제공
     file_path = os.path.join(DOWNLOAD_FOLDER, filename)
     return send_file(file_path, as_attachment=True)
 
